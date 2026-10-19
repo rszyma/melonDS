@@ -56,6 +56,8 @@ enum
     HK_GuitarGripRed,
     HK_GuitarGripYellow,
     HK_GuitarGripBlue,
+    HK_SaveStateSlot1,
+    HK_LoadStateSlot1,
     HK_MAX
 };
 
@@ -183,6 +185,8 @@ private:
     void initFirmwareSaveManager() noexcept;
     std::string getSavestateName(int slot);
     bool savestateExists(int slot);
+    bool saveStateSlot(int slot);
+    bool loadStateSlot(int slot);
     bool loadState(const std::string& filename);
     bool saveState(const std::string& filename);
     void undoStateLoad();

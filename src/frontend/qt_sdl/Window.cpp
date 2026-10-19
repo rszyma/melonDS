@@ -2260,6 +2260,17 @@ void MainWindow::onEmuReset()
     actUndoStateLoad->setEnabled(false);
 }
 
+void MainWindow::onSavestateChange(bool wasLoad)
+{
+    if (!hasMenu) return;
+
+    for (int i = 1; i < 9; i++)
+        actLoadState[i]->setEnabled(emuInstance->savestateExists(i));
+
+    if (wasLoad)
+        actUndoStateLoad->setEnabled(true);
+}
+
 void MainWindow::onUpdateVideoSettings(bool glchange)
 {
     if (!emuInstance) return;

@@ -158,6 +158,8 @@ signals:
     void swapScreensToggle();
     void screenEmphasisToggle();
 
+    void windowSavestateChange(bool wasLoad);
+
     void syncVolumeLevel();
 
 private:

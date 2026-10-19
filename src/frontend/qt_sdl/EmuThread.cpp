@@ -82,6 +82,7 @@ void EmuThread::attachWindow(MainWindow* window)
     {
         connect(this, SIGNAL(windowLimitFPSChange()), window->actLimitFramerate, SLOT(trigger()));
         connect(this, SIGNAL(swapScreensToggle()), window->actScreenSwap, SLOT(trigger()));
+        connect(this, SIGNAL(windowSavestateChange(bool)), window, SLOT(onSavestateChange(bool)));
     }
 }
 
@@ -100,6 +101,7 @@ void EmuThread::detachWindow(MainWindow* window)
     {
         disconnect(this, SIGNAL(windowLimitFPSChange()), window->actLimitFramerate, SLOT(trigger()));
         disconnect(this, SIGNAL(swapScreensToggle()), window->actScreenSwap, SLOT(trigger()));
+        disconnect(this, SIGNAL(windowSavestateChange(bool)), window, SLOT(onSavestateChange(bool)));
     }
 }
 
@@ -162,6 +164,16 @@ void EmuThread::run()
         if (emuInstance->hotkeyPressed(HK_Pause)) emuTogglePause();
         if (emuInstance->hotkeyPressed(HK_Reset)) emuReset();
         if (emuInstance->hotkeyPressed(HK_FrameStep)) emuFrameStep();
+        if (emuInstance->hotkeyPressed(HK_SaveStateSlot1))
+        {
+            emuInstance->saveStateSlot(1);
+            emit windowSavestateChange(false);
+        }
+        if (emuInstance->hotkeyPressed(HK_LoadStateSlot1))
+        {
+            emuInstance->loadStateSlot(1);
+            emit windowSavestateChange(true);
+        }
 
         if (emuInstance->hotkeyPressed(HK_FullscreenToggle)) emit windowFullscreenToggle();
 

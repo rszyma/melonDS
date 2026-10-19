@@ -813,6 +813,42 @@ bool EmuInstance::saveState(const std::string& filename)
     return true;
 }
 
+bool EmuInstance::saveStateSlot(int slot)
+{
+    if (!nds) return false;
+
+    std::string filename = getSavestateName(slot);
+    if (!saveState(filename))
+    {
+        osdAddMessage(0xFFA0A0, "State save to slot %d failed", slot);
+        return false;
+    }
+
+    osdAddMessage(0, "State saved to slot %d", slot);
+    return true;
+}
+
+bool EmuInstance::loadStateSlot(int slot)
+{
+    if (!nds) return false;
+
+    std::string filename = getSavestateName(slot);
+    if (!Platform::FileExists(filename))
+    {
+        osdAddMessage(0xFFA0A0, "State slot %d is empty", slot);
+        return false;
+    }
+
+    if (!loadState(filename))
+    {
+        osdAddMessage(0xFFA0A0, "State load from slot %d failed", slot);
+        return false;
+    }
+
+    osdAddMessage(0, "State loaded from slot %d", slot);
+    return true;
+}
+
 void EmuInstance::undoStateLoad()
 {
     if (!savestateLoaded || !backupState) return;
